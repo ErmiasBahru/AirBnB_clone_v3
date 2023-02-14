@@ -24,10 +24,6 @@ def status_route():
 @app_views.route('/stats', strict_slashes=False)
 def stats_route():
     """Stats"""
-    return_dict = {}
-    for key, value in stats.items():
-        return_dict[key] = storage.count(value)
+    return_dict = {key: storage.count(value) for key, value in stats.items()}
     return jsonify(return_dict)
 
-if __name__ == "__main__":
-    pass

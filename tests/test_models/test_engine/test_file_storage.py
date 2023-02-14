@@ -91,7 +91,7 @@ class TestFileStorage(unittest.TestCase):
         for key, value in classes.items():
             with self.subTest(key=key, value=value):
                 instance = value()
-                instance_key = instance.__class__.__name__ + "." + instance.id
+                instance_key = f"{instance.__class__.__name__}.{instance.id}"
                 storage.new(instance)
                 test_dict[instance_key] = instance
                 self.assertEqual(test_dict, storage._FileStorage__objects)
@@ -105,7 +105,7 @@ class TestFileStorage(unittest.TestCase):
         new_dict = {}
         for key, value in classes.items():
             instance = value()
-            instance_key = instance.__class__.__name__ + "." + instance.id
+            instance_key = f"{instance.__class__.__name__}.{instance.id}"
             new_dict[instance_key] = instance
         save = FileStorage._FileStorage__objects
         FileStorage._FileStorage__objects = new_dict

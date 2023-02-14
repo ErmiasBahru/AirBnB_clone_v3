@@ -34,8 +34,9 @@ class DBStorage:
         passwd = os.getenv('HBNB_MYSQL_PWD')
         host = os.getenv('HBNB_MYSQL_HOST')
         database = os.getenv('HBNB_MYSQL_DB')
-        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'
-                                      .format(user, passwd, host, database))
+        self.__engine = create_engine(
+            f'mysql+mysqldb://{user}:{passwd}@{host}/{database}'
+        )
         if os.getenv('HBNB_ENV') == 'test':
             Base.metadata.drop_all(self.__engine)
 
@@ -48,11 +49,11 @@ class DBStorage:
             cls = name2class.get(cls, None)
         if cls:
             for obj in self.__session.query(cls):
-                objects[obj.__class__.__name__ + '.' + obj.id] = obj
+                objects[f'{obj.__class__.__name__}.{obj.id}'] = obj
         else:
             for cls in name2class.values():
                 for obj in self.__session.query(cls):
-                    objects[obj.__class__.__name__ + '.' + obj.id] = obj
+                    objects[f'{obj.__class__.__name__}.{obj.id}'] = obj
         return objects
 
     def reload(self):
@@ -84,10 +85,9 @@ class DBStorage:
     def get(self, cls, id):
         """Retrieve an object"""
         if cls is not None and type(cls) is str and id is not None and\
-           type(id) is str and cls in name2class:
+               type(id) is str and cls in name2class:
             cls = name2class[cls]
-            result = self.__session.query(cls).filter(cls.id == id).first()
-            return result
+            return self.__session.query(cls).filter(cls.id == id).first()
         else:
             return None
 

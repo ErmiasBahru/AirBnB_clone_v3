@@ -112,6 +112,6 @@ class TestState(unittest.TestCase):
     def test_str(self):
         """test that the str method has the correct output"""
         state = State()
-        string = "[State] ({}) {}".format(state.id, state.__dict__)
+        string = f"[State] ({state.id}) {state.__dict__}"
         self.assertEqual(string, str(state))
         del state

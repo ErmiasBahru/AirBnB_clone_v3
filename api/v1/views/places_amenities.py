@@ -15,13 +15,11 @@ def get_place_amenities(place_id):
     place = storage.get("Place", place_id)
     if place is None:
         abort(404)
-    amenities = []
     if os.getenv('HBNB_TYPE_STORAGE') == 'db':
         amenity_objects = place.amenities
     else:
         amenity_objects = place.amenity_ids
-    for amenity in amenity_objects:
-        amenities.append(amenity.to_dict())
+    amenities = [amenity.to_dict() for amenity in amenity_objects]
     return jsonify(amenities)
 
 
